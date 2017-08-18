@@ -1,0 +1,11 @@
+{
+  "name": "PixelGen",
+  "version": "1.0",
+  "description": "Super awesome FB auto-gen pixel devTool extension",
+  "minimum_chrome_version" : "10.0",
+  "devtools_page": "pixel-gen.html",
+  "manifest_version": 2,
+  "browser_action" : {
+    "default_icon" : "icon.png"
+  }
+}

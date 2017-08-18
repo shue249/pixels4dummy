@@ -68,29 +68,6 @@ function generateCodeForContentIds(element) {
 	return code;
 }
 
-function getValueFromElement(element) {
-	var foundObject = getObject(element);
-	log(foundObject);
-	if (foundObject) {
-		if (foundObject.value) {
-			return foundObject.value;
-		}
-		if (foundObject.innerHTML) {
-			return foundObject.innerHTML;
-		}
-	}
-		
-	return null;
-}
-
-function getValueFromText(input) {
-	return input;
-}
-
-function getCurrencyFromText(input) {
-	return input;
-}
-
 function getCodeByMode(pixelCode, mode, buttonElement = 0) {
 	var generatedCode = null;
 	if (mode === 'buttonclick' && buttonElement) {

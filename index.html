@@ -15,14 +15,7 @@
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   </head>
 
-  <script>
-    function getCode() {
-      // function generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode, buttonElement = 0) {
-      // var eventName = document.getElementById();
-
-      // generateCode();
-    }
-  </script>
+  <script src="index.js"></script>
 
   <body onload="prettyPrint()">
     <div class="container">
@@ -46,14 +39,15 @@
               <div class="col-md-12">
                 <div class="form-group" id="pixel-params-group">
                     <label for="pixel-params">Pixel Params</label>
-                    <div id="pixel-params col-md-6">
+                    <div id="pixel-params">
+                      Add params here...
                         <!-- <label class="col-md-6"></label> -->
                     </div>
                 </div>
               </div>
 
               <div class="col-md-12" id="where-to-place">
-                <div class="form group">
+                <div class="form-group">
                   <label>Where to place</label>
                   <div>
                     Please add auto-gen "where to place" here...
@@ -62,7 +56,7 @@
               </div>
 
               <div class="col-md-12" id="buttons" style="padding-top: 5px">
-                  <div class="form group">
+                  <div class="form-group">
                     <button type="button" class="btn btn-primary" onclick="getCode()">Get Code</button>
                 </div>
               </div>

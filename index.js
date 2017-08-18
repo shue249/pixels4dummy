@@ -1,6 +1,7 @@
 function log(obj) {
   var str = JSON.stringify( obj );
-  chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
+  // chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
+  console.log(obj);
 }
 
 function getCode() {
@@ -31,41 +32,45 @@ document.addEventListener('DOMContentLoaded', init);
 // mode - pageload or buttonclick
 // buttonElement - id or name of the element to perform the click
 function generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode, buttonElement = 0) {
-	var content_ids = getValueFromElement(contentIdsElement);
-	log(content_ids);
-	var value = getValueFromText(getValueFromElement(valueElement));
-	log(value);
-	var currency = getCurrencyFromText(getValueFromElement(currencyElement));
-	log(currency);
-	var pixelCode = "fbq('track','"+eventName+"',{" + 
-		"content_type: '"+contentType+"'," +
-		"content_ids: '"+content_ids+"'," + 
-		"value: "+value+"," + 
-		"currency: '"+currency+"'" + 
+	var contentIdsCode = generateCodeForContentIds(contentIdsElement);
+	var valueCode = "var value = 10.00;";
+	var currencyCode = "var currency = 'USD';";
+	var pixelCode = contentIdsCode +
+		valueCode +
+		currencyCode +
+		"fbq('track','"+eventName+"',{" + 
+			"content_type: '"+contentType+"'," +
+			"content_ids: content_ids," + 
+			"value: value," + 
+			"currency: currency" + 
 		"});"
 
 	var generatedCode = getCodeByMode(pixelCode, mode, buttonElement);
 	return generatedCode;
 }
 
-function getObject(element) {
-	var foundObject = null;
+function generateCodeForValue(element) {	
 	if (element.id) {
-		foundObject = document.getElementById(element.id);
-	} 
-
-	if (!foundObject && element.name) {
-		var objects = document.getElementsByName(element.name);
-		if (objects && objects.length > 0) {
-			foundObject = objects[0];
-		}
+		return "obj = document.getElementById('" + element.id + "');";
+	} else {
+		return "obj = document.getElementsByName('" + element.name + "')[0];";
 	}
-	return foundObject;	
+}
+
+function generateCodeForContentIds(element) {
+	code = generateCodeForValue(element);
+	code = code + "var content_ids = '';" +
+		"if (obj.value) {" +
+		"content_ids = '" + obj.value + "';" +
+		"} else if (obj.innerHTML) {" +
+		"content_ids = '" + obj.innerHTML + "';" +
+		"}";
+	return code;
 }
 
 function getValueFromElement(element) {
 	var foundObject = getObject(element);
-
+	log(foundObject);
 	if (foundObject) {
 		if (foundObject.value) {
 			return foundObject.value;

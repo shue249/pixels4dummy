@@ -9,8 +9,10 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="generatepixel.js" type="text/javascript"></script>
+    <script src="events.js" type="text/javascript"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   </head>
 
   <script>
@@ -35,14 +37,11 @@
         <hr style="width: 100%; color: #337ab7; height: 1px; background-color:#337ab7;" />
         <div class="col-md-12">
           <form>
-
             <div class="col-md-12">
               <div class="form-group col-md-6" id="event-id-group">
                 <label for="event-selection">Event</label>
                 <select class="form-control" id="event-selector">
-                  <option value="ViewContent">View Contents</option>
-                  <option value="AddToCart">Add to Cart</option>
-                  <option value="Purchase">Purchase</option>
+                  <option selected disabled>Select an Event</option>
                 </select>
               </div>
             </div>
@@ -51,7 +50,7 @@
               <div class="form-group col-md-6" id="pixel-params-group">
                   <label for="pixel-params">Pixel Params</label>
                   <div id="pixel-params col-md-6">
-                      Please pull pixel params accordingly here...
+                      <!-- <label class="col-md-6"></label> -->
                   </div>
               </div>
             </div>
@@ -71,6 +70,20 @@
               </div>
             </div>
           </form>
+
+          <div class="col-md-6" id="codeSnippet">
+            <code>
+              <pre class="prettyprint">
+            //Put generate code snippet here..
+            $(document).ready(function(){
+              setTimeout(function(){
+                console.log('deleting cookie');
+                $.cookie('cookie',null,{domain: document.domain});
+             },1000);
+            });
+              </pre>
+            </code>
+          </div>
         </div>
       </div>
     </div>

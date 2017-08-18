@@ -12,12 +12,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="generatepixel.js" type="text/javascript"></script>
     <script src="events.js" type="text/javascript"></script>
+    <script src="index.js" type="text/javascript"></script>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   </head>
-
-  <script src="index.js"></script>
-
-  <body onload="prettyPrint()">
+  <body>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -35,14 +33,12 @@
                   </select>
                 </div>
               </div>
-
               <div class="col-md-12">
                 <div hidden class="form-group" id="pixel-params-group">
                     <label for="pixel-params">Pixel Params</label>
                     <div id="pixel-params"></div>
                 </div>
               </div>
-
               <div class="col-md-12" id="where-to-place">
                 <div class="form-group">
                   <label>Where to place</label>
@@ -51,26 +47,23 @@
                   </div>
                 </div>
               </div>
-
-              <div class="col-md-12" id="buttons" style="padding-top: 5px">
-                  <div class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="getCode()">Get Code</button>
-                </div>
+              <div class="form-group col-md-12" style="padding-top: 5px">
+                <button type="button" class="btn btn-primary" onClick="getCode()" id="get-code">Get Code</button>
               </div>
             </form>
           </div>
-          <div class="col-md-6" id="codeSnippet">
+          <div class="col-md-6" id="code-snippet" style="display:none">
             <div class="alert alert-success" role="alert">
               <strong>Well done!</strong> - please copy and paste the code below
             </div>
             <pre class="prettyprint">
-        //Put generate code snippet here..
-        $(document).ready(function(){
-          setTimeout(function(){
-            console.log('deleting cookie');
-            $.cookie('cookie',null,{domain: document.domain});
-         },1000);
-        });
+            //Put generate code snippet here..
+            $(document).ready(function(){
+              setTimeout(function(){
+                console.log('deleting cookie');
+                $.cookie('cookie',null,{domain: document.domain});
+             },1000);
+            });
             </pre>
           </div>
         </div>

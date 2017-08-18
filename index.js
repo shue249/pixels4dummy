@@ -1,8 +1,15 @@
 function getCode() {
-// function generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode, buttonElement = 0) {
-// var eventName = document.getElementById();
-
-// generateCode();
+	log('1');
+ //  var eventName = $('#event-selection').value;
+ //  var contentType = 'product';
+ //  var contentIdsElement = {id: 'product_id'};
+ //  var valueElement = {id: 'price'};
+ //  var currencyElement = {id: 'USD'};
+ //  var mode = 'pageload';
+  
+ //  generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);
+ //  log(generatedCode);
+ //  $('#codeSnippet').innerHTML = generatedCode;
 }
 
 function init() {

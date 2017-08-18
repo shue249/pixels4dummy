@@ -4,17 +4,17 @@ function log(obj) {
 }
 
 function getCode() {
-  var eventName = document.getElementById('event-id-group').value;
-  log(eventName);
+  log('start getcode');
+  var eventName = document.getElementById('event-selector').value;
   var contentType = 'product';
   var contentIdsElement = {id: 'product_id'};
   var valueElement = {id: 'price'};
   var currencyElement = {id: 'USD'};
   var mode = 'pageload';
-  log('2');
   generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);
   log(generatedCode);
   $('#codeSnippet').innerHTML = generatedCode;
+  log('end getcode');
 }
 
 function init() {
@@ -79,7 +79,7 @@ function getValueFromElement(element) {
 }
 
 function getValueFromText(input) {
-	return parseFloat(input);
+	return input;
 }
 
 function getCurrencyFromText(input) {

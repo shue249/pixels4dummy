@@ -1,45 +1,45 @@
 var EVENTS = {
-  'viewcontent': {
+  'ViewContent': {
     'name': 'ViewContent',
     'parameters': ['value', 'currency', 'content_name', 'content_type', 'content_ids'],
     'required': []
   },
-  'search': {
+  'Search': {
     'name': 'Search',
     'parameters': ['value', 'currency', 'content_category', 'content_ids', 'search_string'],
     'required': []
   },
-  'addtocart': {
+  'AddToCart': {
     'name': 'AddToCart',
     'parameters': ['value', 'currency', 'content_name', 'content_type', 'content_ids'],
     'required': []
   },
-  'addtowishlist': {
+  'AddToWishlist': {
     'name': 'AddToWishlist',
     'parameters': ['value', 'currency', 'content_name', 'content_category', 'content_ids'],
     'required': []
   },
-  'initiatecheckout': {
+  'InitiateCheckout': {
     'name': 'InitiateCheckout',
     'parameters': ['value', 'currency', 'content_name', 'content_category', 'content_ids', 'num_items'],
     'required': []
   },
-  'addpaymentinfo': {
+  'AddPaymentInfo': {
     'name': 'AddPaymentInfo',
     'parameters': ['value', 'currency', 'content_category', 'content_ids'],
     'required': []
   },
-  'purchase': {
+  'Purchase': {
     'name': 'Purchase',
     'parameters': ['value', 'currency', 'content_name', 'content_type', 'content_ids', 'num_items'],
     'required': ['value', 'currency']
   },
-  'lead': {
+  'Lead': {
     'name': 'Lead',
     'parameters': ['value', 'currency', 'content_name', 'content_category'],
     'required': []
   },
-  'completeregistration': {
+  'CompleteRegistration': {
     'name': 'CompleteRegistration',
     'parameters': ['value', 'currency', 'content_name', 'status'],
     'required': []

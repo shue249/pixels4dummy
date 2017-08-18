@@ -24,7 +24,8 @@
       var currencyElement = {id: 'USD'};
       var mode = 'pageload';
       
-      generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);      
+      generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);
+      $('#event-selection').innerHTML = generatedCode;
     }
   </script>
 

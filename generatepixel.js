@@ -23,11 +23,11 @@ function generateCode(eventName, contentType, contentIdsElement, valueElement, c
 function getObject(element) {
 	var foundObject = null;
 	if (element.id) {
-		foundObject = document.getElementById(element);
+		foundObject = document.getElementById(element.id);
 	} 
 
 	if (!foundObject && element.name) {
-		var objects = document.getElementsByName(element);
+		var objects = document.getElementsByName(element.name);
 		if (objects && objects.length > 0) {
 			foundObject = objects[0];
 		}
@@ -62,21 +62,24 @@ function getCodeByMode(pixelCode, mode, buttonElement = 0) {
 	var generatedCode = null;
 	if (mode === 'buttonclick' && buttonElement) {
 		generatedCode = "<script>" +
+			"document.addEventListener('DOMContentLoaded', function() {";
+
+		if (buttonElement.id) {
+			generatedCode += "var clickButton = document.getElementById(buttonElement.name);";
+		} else {
+			generatedCode += "var clickButton = document.getElementsByName(buttonElement.name)[0];";
+		}
+		generatedCode = generatedCode + "clickButton.addEventListener('click', function() {" +
 			pixelCode +
+			"}, false);" +
+			"});" +
 			"</script>";
 	} else {
-		if (buttonElement.id || buttonElement.name) {
-			generatedCode = "<script>";
-			if (buttonElement.id) {
-				generatedCode += "var clickButton = document.getElementById(buttonElement.name);";
-			} else {
-				generatedCode += "var clickButton = document.getElementsByName(buttonElement.name)[0];";
-			}
-			generatedCode += "clickButton.addEventListener('click', function() {" +
-				pixelCode +
-				"}, false);" +
-				"</script>";
-		}
+		generatedCode = "<script>" +
+			"document.addEventListener('DOMContentLoaded', function() {" +
+			pixelCode +
+			"});" +
+			"</script>";
 	}
 
 	return generatedCode;

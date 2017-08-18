@@ -6,9 +6,11 @@
 // buttonElement - id or name of the element to perform the click
 function generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode, buttonElement = 0) {
 	var content_ids = getValueFromElement(contentIdsElement);
+	log(content_ids);
 	var value = getValueFromText(getValueFromElement(valueElement));
-	var currency = getCurrencyFromText(getValueFromElement(contentIdsElement));
-
+	log(value);
+	var currency = getCurrencyFromText(getValueFromElement(currencyElement));
+	log(currency);
 	var pixelCode = "fbq('track','"+eventName+"',{" + 
 		"content_type: '"+contentType+"'," +
 		"content_ids: '"+content_ids+"'," + 

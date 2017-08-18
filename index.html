@@ -24,7 +24,7 @@
     }
   </script>
 
-  <body>
+  <body onload="prettyPrint()">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -32,51 +32,52 @@
         </div>
         <hr style="width: 100%; color: #337ab7; height: 1px; background-color:#337ab7;" />
         <div class="col-md-12">
-          <form>
-            <div class="col-md-12">
-              <div class="form-group col-md-6" id="event-id-group">
-                <label for="event-selection">Event</label>
-                <select class="form-control" id="event-selector">
-                  <option selected disabled>Select an Event</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <div class="form-group col-md-6" id="pixel-params-group">
-                  <label for="pixel-params">Pixel Params</label>
-                  <div id="pixel-params col-md-6">
-                      <!-- <label class="col-md-6"></label> -->
-                  </div>
-              </div>
-            </div>
-
-            <div class="col-md-12" id="where-to-place">
-              <div class="form group col-md-6">
-                <label>Where to place</label>
-                <div>
-                  Please add auto-gen "where to place" here...
+          <div class="col-md-6">
+            <form>
+              <div class="col-md-12">
+                <div class="form-group" id="event-id-group">
+                  <label for="event-selection">Event</label>
+                  <select class="form-control" id="event-selector">
+                    <option selected disabled>Select an Event</option>
+                  </select>
                 </div>
               </div>
-            </div>
 
-            <div class="col-md-12" id="buttons" style="padding-top: 5px">
-                <div class="form group col-md-6">
-                  <button type="button" class="btn btn-primary" onclick="getCode()">Get Code</button>
+              <div class="col-md-12">
+                <div class="form-group" id="pixel-params-group">
+                    <label for="pixel-params">Pixel Params</label>
+                    <div id="pixel-params col-md-6">
+                        <!-- <label class="col-md-6"></label> -->
+                    </div>
+                </div>
               </div>
-            </div>
-          </form>
 
-          <div class="col-md-6" id="codeSnippet">
+              <div class="col-md-12" id="where-to-place">
+                <div class="form group">
+                  <label>Where to place</label>
+                  <div>
+                    Please add auto-gen "where to place" here...
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12" id="buttons" style="padding-top: 5px">
+                  <div class="form group">
+                    <button type="button" class="btn btn-primary" onclick="getCode()">Get Code</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-46" id="codeSnippet">
             <code>
               <pre class="prettyprint">
-            //Put generate code snippet here..
-            $(document).ready(function(){
-              setTimeout(function(){
-                console.log('deleting cookie');
-                $.cookie('cookie',null,{domain: document.domain});
-             },1000);
-            });
+        //Put generate code snippet here..
+        $(document).ready(function(){
+          setTimeout(function(){
+            console.log('deleting cookie');
+            $.cookie('cookie',null,{domain: document.domain});
+         },1000);
+        });
               </pre>
             </code>
           </div>

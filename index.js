@@ -61,9 +61,9 @@ function generateCodeForContentIds(element) {
 	code = generateCodeForValue(element);
 	code = code + "var content_ids = '';" +
 		"if (obj.value) {" +
-		"content_ids = '" + obj.value + "';" +
+		"content_ids = obj.value;" +
 		"} else if (obj.innerHTML) {" +
-		"content_ids = '" + obj.innerHTML + "';" +
+		"content_ids = obj.innerHTML;" +
 		"}";
 	return code;
 }

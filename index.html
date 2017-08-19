@@ -48,23 +48,17 @@
                 </div>
               </div>
               <div class="form-group col-md-12" style="padding-top: 5px">
-                <button type="button" class="btn btn-primary" onClick="getCode()" id="get-code">Get Code</button>
+                <button type="button" class="btn btn-primary" onClick="getCode()" id="getcode">Get Code</button>
               </div>
             </form>
           </div>
-          <div class="col-md-6" id="code-snippet" style="display:none">
-            <div class="alert alert-success" role="alert">
-              <strong>Well done!</strong> - please copy and paste the code below
-            </div>
-            <pre class="prettyprint">
-            //Put generate code snippet here..
-            $(document).ready(function(){
-              setTimeout(function(){
-                console.log('deleting cookie');
-                $.cookie('cookie',null,{domain: document.domain});
-             },1000);
-            });
-            </pre>
+          <div class="col-md-6" id='code-snippet-block' style="display: none">
+              <div class="alert alert-success" role="alert" id="confirmation" >
+                <strong>Well done!</strong> - please copy and paste the code below
+              </div>
+              <pre class="prettyprint">
+                <div id="code-snippet"> </div>
+              </pre>
           </div>
         </div>
       </div>

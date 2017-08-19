@@ -7,7 +7,6 @@ var pixelLayer = {
 function log(obj) {
   var str = JSON.stringify( obj );
   chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
-  // console.log(obj);
 }
 
 function getCode() {

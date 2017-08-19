@@ -1,3 +1,9 @@
+pixelLayer = {
+	content_ids: 'product_id',
+	value: 'price',	
+	currency: 'currency'
+};
+
 function log(obj) {
   var str = JSON.stringify( obj );
   chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
@@ -8,11 +14,8 @@ function getCode() {
   log('start getcode');
   var eventName = document.getElementById('event-selector').value;
   var contentType = 'product';
-  var contentIdsElement = {id: 'product_id'};
-  var valueElement = {id: 'price'};
-  var currencyElement = {id: 'USD'};
   var mode = 'pageload';
-  generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);
+  generatedCode = generateCode(eventName, contentType, pixelLayer.content_ids, pixelLayer.value, pixelLayer.currency, mode);
   log(generatedCode);
   $('#codeSnippet').innerHTML = generatedCode;
   log('end getcode');
@@ -41,7 +44,7 @@ function generateCode(eventName, contentType, contentIdsElement, valueElement, c
 		"fbq('track','"+eventName+"',{" + 
 			"content_type: '"+contentType+"'," +
 			"content_ids: content_ids," + 
-			"value: value," + 
+			"value: amount," + 
 			"currency: currency" + 
 		"});"
 
@@ -70,11 +73,14 @@ function generateCodeForContentIds(element) {
 
 function generateCodeForValue(element) {
 	code = generateCodeForObject(element);
-	code = code + "var value = 0;" +
+	code = code + "var amount = 0;" +
 		"if (obj.value) {" +
-		"value = parseFloat(obj.value);" +
+		"amount = obj.value.match(/-?\\d+\\.?\\d*/);" +
 		"} else if (obj.innerHTML) {" +
-		"value = parseFloat(obj.innerHTML);" +
+		"results = obj.innerHTML.match(/-?\\d+\\.?\\d*/);" +
+		"if (results) {" +
+		"amount = results[0];" +
+		"}" +
 		"}";
 	return code;
 }

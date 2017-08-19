@@ -13,7 +13,7 @@ function getCode() {
   var currencyElement = {id: 'USD'};
   var mode = 'pageload';
   var codeSnippet = document.getElementById('code-snippet');
-  generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);
+  var generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);
   log(generatedCode);
   codeSnippet.append(generatedCode);
   show('code-snippet-block');
@@ -22,8 +22,6 @@ function getCode() {
 
 function init() {
   document.getElementById('getcode').addEventListener('click', getCode);
-  log('a');
-
 }
 document.addEventListener('DOMContentLoaded', init);
 

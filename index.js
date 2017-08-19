@@ -3,6 +3,21 @@ function log(obj) {
   chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
 }
 
+function getSelectedID() {
+  var selectedID;
+  chrome.devtools.inspectedWindow.eval('$0.id',
+  function(res, err) {
+    log(res);
+    if (res == null) {
+      alert('no id');
+    } else {
+      selectedID = res;
+    }
+  });
+  log(selectedID);
+  return selectedID;
+}
+
 function getCode() {
   log('start getcode');
   var eventName = document.getElementById('event-selector').value;
@@ -19,8 +34,7 @@ function getCode() {
 
 function init() {
   document.getElementById('getcode').addEventListener('click', function() {getCode();});
-  log('a');
-
+  getSelectedID();
 }
 document.addEventListener('DOMContentLoaded', init);
 

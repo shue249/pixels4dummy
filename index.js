@@ -1,7 +1,6 @@
 var pixelLayer = {
 	content_ids: 'product_id',
-	value: 'price',	
-	currency: 'currency'
+	value: 'price'
 };
 
 function log(obj) {
@@ -11,11 +10,12 @@ function log(obj) {
 
 function getCode() {
   log('start getcode');
+  log(pixelLayer.content_ids);  
   var eventName = document.getElementById('event-selector').value;
   var contentType = 'product';
   var mode = 'pageload';
   var codeSnippet = document.getElementById('code-snippet');
-  var generatedCode = generateCode(eventName, contentType, pixelLayer.content_ids, pixelLayer.value, pixelLayer.currency, mode);
+  var generatedCode = generateCode(eventName, contentType, pixelLayer.content_ids, pixelLayer.value, mode);
   log(generatedCode);
   codeSnippet.append(generatedCode);
   show('code-snippet-block');
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', init);
 // currencyElement - id or name of the element containing the currency, json, eg {id: 'currency'} or {name: 'currency'}
 // mode - pageload or buttonclick
 // buttonElement - id or name of the element to perform the click
-function generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode, buttonElement = 0) {
+function generateCode(eventName, contentType, contentIdsElement, valueElement, mode, buttonElement = 0) {
 	var contentIdsCode = generateCodeForContentIds(contentIdsElement);
 	var valueCode = generateCodeForValue(valueElement);
 	var currencyCode = "var currency = 'USD';";

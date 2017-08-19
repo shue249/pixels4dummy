@@ -53,7 +53,7 @@ function log(obj) {
   chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
 }
 
-function getSelectedID(link) {
+function getSelectedID() {
   var selectedID;
   chrome.devtools.inspectedWindow.eval('$0.id',
   function(res, err) {

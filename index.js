@@ -1,4 +1,4 @@
-pixelLayer = {
+var pixelLayer = {
 	content_ids: 'product_id',
 	value: 'price',	
 	currency: 'currency'
@@ -15,23 +15,23 @@ function getCode() {
   var eventName = document.getElementById('event-selector').value;
   var contentType = 'product';
   var mode = 'pageload';
-  generatedCode = generateCode(eventName, contentType, pixelLayer.content_ids, pixelLayer.value, pixelLayer.currency, mode);
+  var codeSnippet = document.getElementById('code-snippet');
+  var generatedCode = generateCode(eventName, contentType, pixelLayer.content_ids, pixelLayer.value, pixelLayer.currency, mode);
   log(generatedCode);
-  $('#codeSnippet').innerHTML = generatedCode;
+  codeSnippet.append(generatedCode);
+  show('code-snippet-block');
   log('end getcode');
 }
 
 function init() {
-  document.getElementById('getcode').addEventListener('click', function() {getCode();});
-  log('a');
-
+  document.getElementById('getcode').addEventListener('click', getCode);
 }
 document.addEventListener('DOMContentLoaded', init);
 
 // eventName - name of the pixel event, string, possible values are ViewContent, AddToCart, Purchase
-// contentIdsElement - id or name of the element containing the content_ids, json, eg {id: 'product_id'} or {name: 'product_id'} 
-// valueElement - id or name of the element containing the value, json, eg {id: 'value'} or {name: 'value'} 
-// currencyElement - id or name of the element containing the currency, json, eg {id: 'currency'} or {name: 'currency'} 
+// contentIdsElement - id or name of the element containing the content_ids, json, eg {id: 'product_id'} or {name: 'product_id'}
+// valueElement - id or name of the element containing the value, json, eg {id: 'value'} or {name: 'value'}
+// currencyElement - id or name of the element containing the currency, json, eg {id: 'currency'} or {name: 'currency'}
 // mode - pageload or buttonclick
 // buttonElement - id or name of the element to perform the click
 function generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode, buttonElement = 0) {
@@ -41,7 +41,7 @@ function generateCode(eventName, contentType, contentIdsElement, valueElement, c
 	var pixelCode = contentIdsCode +
 		valueCode +
 		currencyCode +
-		"fbq('track','"+eventName+"',{" + 
+		"fbq('track','"+eventName+"',{" +
 			"content_type: '"+contentType+"'," +
 			"content_ids: content_ids," + 
 			"value: amount," + 
@@ -110,4 +110,11 @@ function getCodeByMode(pixelCode, mode, buttonElement = 0) {
 	}
 
 	return generatedCode;
+}
+
+function show(id) {
+  var element = document.getElementById(id);
+  if (element.style.display === 'none') {
+    element.style.display = 'block';
+  }
 }

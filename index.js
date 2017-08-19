@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', init);
 // buttonElement - id or name of the element to perform the click
 function generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode, buttonElement = 0) {
 	var contentIdsCode = generateCodeForContentIds(contentIdsElement);
-	var valueCode = "var value = 10.00;";
+	var valueCode = generateCodeForValue(valueElement);
 	var currencyCode = "var currency = 'USD';";
 	var pixelCode = contentIdsCode +
 		valueCode +
@@ -49,7 +49,7 @@ function generateCode(eventName, contentType, contentIdsElement, valueElement, c
 	return generatedCode;
 }
 
-function generateCodeForValue(element) {	
+function generateCodeForObject(element) {	
 	if (element.id) {
 		return "obj = document.getElementById('" + element.id + "');";
 	} else {
@@ -58,12 +58,23 @@ function generateCodeForValue(element) {
 }
 
 function generateCodeForContentIds(element) {
-	code = generateCodeForValue(element);
+	code = generateCodeForObject(element);
 	code = code + "var content_ids = '';" +
 		"if (obj.value) {" +
 		"content_ids = obj.value;" +
 		"} else if (obj.innerHTML) {" +
 		"content_ids = obj.innerHTML;" +
+		"}";
+	return code;
+}
+
+function generateCodeForValue(element) {
+	code = generateCodeForObject(element);
+	code = code + "var value = 0;" +
+		"if (obj.value) {" +
+		"value = parseFloat(obj.value);" +
+		"} else if (obj.innerHTML) {" +
+		"value = parseFloat(obj.innerHTML);" +
 		"}";
 	return code;
 }

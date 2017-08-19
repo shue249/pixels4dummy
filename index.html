@@ -16,7 +16,7 @@
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   </head>
 
-  <body onload="prettyPrint()">
+  <body>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -34,14 +34,12 @@
                   </select>
                 </div>
               </div>
-
               <div class="col-md-12">
                 <div hidden class="form-group" id="pixel-params-group">
                     <label for="pixel-params">Pixel Params</label>
                     <div id="pixel-params"></div>
                 </div>
               </div>
-
               <div class="col-md-12" id="where-to-place">
                 <div class="form-group">
                   <label>Where to place</label>
@@ -50,26 +48,18 @@
                   </div>
                 </div>
               </div>
-
-            <div class="col-md-12" id="buttons" style="padding-top: 5px">
-                <div class="form group col-md-6">
-                  <button type="button" class="btn btn-primary" id="getcode" onclick="getCode()">Get Code</button>
+              <div class="form-group col-md-12" style="padding-top: 5px">
+                <button type="button" class="btn btn-primary" onClick="getCode()" id="getcode">Get Code</button>
               </div>
             </form>
           </div>
-          <div class="col-md-6">
-            <div class="alert alert-success" role="alert">
-              <strong>Well done!</strong> - please copy and paste the code below
-            </div>
-            <pre class="prettyprint" id="codeSnippet">
-        //Put generate code snippet here..
-        $(document).ready(function(){
-          setTimeout(function(){
-            console.log('deleting cookie');
-            $.cookie('cookie',null,{domain: document.domain});
-         },1000);
-        });
-            </pre>
+          <div class="col-md-6" id='code-snippet-block' style="display: none">
+              <div class="alert alert-success" role="alert" id="confirmation" >
+                <strong>Well done!</strong> - please copy and paste the code below
+              </div>
+              <pre class="prettyprint">
+                <div id="code-snippet"> </div>
+              </pre>
           </div>
         </div>
       </div>

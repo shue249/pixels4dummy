@@ -1,6 +1,7 @@
 function log(obj) {
   var str = JSON.stringify( obj );
   chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
+  // console.log(obj);
 }
 
 function getSelectedID() {
@@ -26,9 +27,11 @@ function getCode() {
   var valueElement = {id: 'price'};
   var currencyElement = {id: 'USD'};
   var mode = 'pageload';
-  generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);
+  var codeSnippet = document.getElementById('code-snippet');
+  var generatedCode = generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode);
   log(generatedCode);
-  $('#codeSnippet').innerHTML = generatedCode;
+  codeSnippet.append(generatedCode);
+  show('code-snippet-block');
   log('end getcode');
 }
 
@@ -39,65 +42,46 @@ function init() {
 document.addEventListener('DOMContentLoaded', init);
 
 // eventName - name of the pixel event, string, possible values are ViewContent, AddToCart, Purchase
-// contentIdsElement - id or name of the element containing the content_ids, json, eg {id: 'product_id'} or {name: 'product_id'} 
-// valueElement - id or name of the element containing the value, json, eg {id: 'value'} or {name: 'value'} 
-// currencyElement - id or name of the element containing the currency, json, eg {id: 'currency'} or {name: 'currency'} 
+// contentIdsElement - id or name of the element containing the content_ids, json, eg {id: 'product_id'} or {name: 'product_id'}
+// valueElement - id or name of the element containing the value, json, eg {id: 'value'} or {name: 'value'}
+// currencyElement - id or name of the element containing the currency, json, eg {id: 'currency'} or {name: 'currency'}
 // mode - pageload or buttonclick
 // buttonElement - id or name of the element to perform the click
 function generateCode(eventName, contentType, contentIdsElement, valueElement, currencyElement, mode, buttonElement = 0) {
-	var content_ids = getValueFromElement(contentIdsElement);
-	log(content_ids);
-	var value = getValueFromText(getValueFromElement(valueElement));
-	log(value);
-	var currency = getCurrencyFromText(getValueFromElement(currencyElement));
-	log(currency);
-	var pixelCode = "fbq('track','"+eventName+"',{" + 
-		"content_type: '"+contentType+"'," +
-		"content_ids: '"+content_ids+"'," + 
-		"value: "+value+"," + 
-		"currency: '"+currency+"'" + 
+	var contentIdsCode = generateCodeForContentIds(contentIdsElement);
+	var valueCode = "var value = 10.00;";
+	var currencyCode = "var currency = 'USD';";
+	var pixelCode = contentIdsCode +
+		valueCode +
+		currencyCode +
+		"fbq('track','"+eventName+"',{" +
+			"content_type: '"+contentType+"'," +
+			"content_ids: content_ids," +
+			"value: value," +
+			"currency: currency" +
 		"});"
 
 	var generatedCode = getCodeByMode(pixelCode, mode, buttonElement);
 	return generatedCode;
 }
 
-function getObject(element) {
-	var foundObject = null;
+function generateCodeForValue(element) {
 	if (element.id) {
-		foundObject = document.getElementById(element.id);
-	} 
-
-	if (!foundObject && element.name) {
-		var objects = document.getElementsByName(element.name);
-		if (objects && objects.length > 0) {
-			foundObject = objects[0];
-		}
+		return "obj = document.getElementById('" + element.id + "');";
+	} else {
+		return "obj = document.getElementsByName('" + element.name + "')[0];";
 	}
-	return foundObject;	
 }
 
-function getValueFromElement(element) {
-	var foundObject = getObject(element);
-
-	if (foundObject) {
-		if (foundObject.value) {
-			return foundObject.value;
-		}
-		if (foundObject.innerHTML) {
-			return foundObject.innerHTML;
-		}
-	}
-		
-	return null;
-}
-
-function getValueFromText(input) {
-	return input;
-}
-
-function getCurrencyFromText(input) {
-	return input;
+function generateCodeForContentIds(element) {
+	code = generateCodeForValue(element);
+	code = code + "var content_ids = '';" +
+		"if (obj.value) {" +
+		"content_ids = obj.value;" +
+		"} else if (obj.innerHTML) {" +
+		"content_ids = obj.innerHTML;" +
+		"}";
+	return code;
 }
 
 function getCodeByMode(pixelCode, mode, buttonElement = 0) {
@@ -125,4 +109,11 @@ function getCodeByMode(pixelCode, mode, buttonElement = 0) {
 	}
 
 	return generatedCode;
+}
+
+function show(id) {
+  var element = document.getElementById(id);
+  if (element.style.display === 'none') {
+    element.style.display = 'block';
+  }
 }

@@ -1,3 +1,5 @@
+var pixelLayer = {};
+
 var EVENTS = {
   'ViewContent': {
     'name': 'ViewContent',
@@ -58,6 +60,13 @@ function addEventsToMenu() {
   });
 }
 
+function attributeIDtoLink(link) {
+	var id = getSelectedID();
+	var text = link.innerHTML;
+	pixelLayer.push({text: id});
+	link.innerHTML.append(': ' + id);
+}
+
 function onEventSelect() {
   var menu = document.getElementById("event-selector");
   var paramsGroupDiv = document.getElementById("pixel-params-group");
@@ -67,11 +76,16 @@ function onEventSelect() {
 
   Object.values(EVENTS[selectedEvent]['parameters']).forEach(function (param) {
     var item = document.createElement('li');
+    var link = document.createElement('a');
+		link.setAttribute('href', '#');
+		link.setAttribute('id', selectedEvent.toString() + '_' + param);
+		link.addEventListener('click', () => attributeIDtoLink(this));
     if (EVENTS[selectedEvent]['required'].includes(param)) {
-      item.appendChild(document.createTextNode(param + " (required)"));
+      link.appendChild(document.createTextNode(param + " (required)"));
     } else {
-      item.appendChild(document.createTextNode(param));
+      link.appendChild(document.createTextNode(param));
     }
+		item.appendChild(link);
     list.appendChild(item);
   });
   paramsDiv.innerHTML = '';

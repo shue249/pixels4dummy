@@ -8,6 +8,21 @@ function log(obj) {
   chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
 }
 
+function getSelectedID() {
+  var selectedID;
+  chrome.devtools.inspectedWindow.eval('$0.id',
+  function(res, err) {
+    log(res);
+    if (res == null) {
+      alert('no id');
+    } else {
+      selectedID = res;
+    }
+  });
+  log(selectedID);
+  return selectedID;
+}
+
 function getCode() {
   log('start getcode');
   log(pixelLayer.content_ids);  
@@ -23,7 +38,8 @@ function getCode() {
 }
 
 function init() {
-  document.getElementById('getcode').addEventListener('click', getCode);
+  document.getElementById('getcode').addEventListener('click', function() {getCode();});
+  getSelectedID();
 }
 document.addEventListener('DOMContentLoaded', init);
 

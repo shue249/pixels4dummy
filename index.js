@@ -3,139 +3,180 @@ var pixelLayer = {};
 var EVENTS = {
   'ViewContent': {
     'name': 'ViewContent',
-    'parameters': ['value', 'currency', 'content_name', 'content_type', 'content_ids'],
-    'required': []
-  },
-  'Search': {
-    'name': 'Search',
-    'parameters': ['value', 'currency', 'content_category', 'content_ids', 'search_string'],
-    'required': []
+    'parameters': [
+    	{id: 'content_type', availability: 'required', type: 'select', values: ['product', 'product_group'], datatype: 'string'},
+    	{id: 'content_ids', availability: 'required', type: 'link', datatype: 'string'},
+    	{id: 'value', availability: 'recommended', type: 'link', datatype: 'number'},
+    	{id: 'currency', availability: 'recommended', type: 'select', values: ['USD', 'SGD'], datatype: 'string'},
+    	{id: 'content_name', availability: '', type: 'link', datatype: 'string'}
+    ]
   },
   'AddToCart': {
     'name': 'AddToCart',
-    'parameters': ['value', 'currency', 'content_name', 'content_type', 'content_ids'],
-    'required': []
-  },
-  'AddToWishlist': {
-    'name': 'AddToWishlist',
-    'parameters': ['value', 'currency', 'content_name', 'content_category', 'content_ids'],
-    'required': []
-  },
-  'InitiateCheckout': {
-    'name': 'InitiateCheckout',
-    'parameters': ['value', 'currency', 'content_name', 'content_category', 'content_ids', 'num_items'],
-    'required': []
-  },
-  'AddPaymentInfo': {
-    'name': 'AddPaymentInfo',
-    'parameters': ['value', 'currency', 'content_category', 'content_ids'],
-    'required': []
+    'parameters': [
+    	{id: 'content_type', availability: 'required', type: 'select', values: ['product', 'product_group'], datatype: 'string'},
+    	{id: 'content_ids', availability: 'required', type: 'link', datatype: 'string'},
+    	{id: 'value', availability: 'recommended', type: 'link', datatype: 'number'},
+    	{id: 'currency', availability: 'recommended', type: 'select', values: ['USD', 'SGD'], datatype: 'string'},
+    	{id: 'content_name', availability: '', type: 'link', datatype: 'string'}
+    ]
   },
   'Purchase': {
     'name': 'Purchase',
-    'parameters': ['value', 'currency', 'content_name', 'content_type', 'content_ids', 'num_items'],
-    'required': ['value', 'currency']
-  },
-  'Lead': {
-    'name': 'Lead',
-    'parameters': ['value', 'currency', 'content_name', 'content_category'],
-    'required': []
-  },
-  'CompleteRegistration': {
-    'name': 'CompleteRegistration',
-    'parameters': ['value', 'currency', 'content_name', 'status'],
-    'required': []
+    'parameters': [
+    	{id: 'content_type', availability: 'required', type: 'select', values: ['product', 'product_group'], datatype: 'string'},
+    	{id: 'content_ids', availability: 'required', type: 'link', datatype: 'string'},
+    	{id: 'value', availability: 'recommended', type: 'link', datatype: 'number'},
+    	{id: 'currency', availability: 'recommended', type: 'select', values: ['USD', 'SGD'], datatype: 'string'},
+    	{id: 'content_name', availability: '', type: 'link', datatype: 'string'},
+    	{id: 'num_items', availability: '', type: 'link', datatype: 'number'}
+    ]
   }
 };
+
+// var EVENTS = {
+//   'ViewContent': {
+//     'name': 'ViewContent',
+//     'parameters': ['content_type', 'content_ids', 'value', 'currency', 'content_name'],
+//     'required': []
+//   },
+//   'AddToCart': {
+//     'name': 'AddToCart',
+//     'parameters': ['content_type', 'content_ids', 'value', 'currency', 'content_name'],
+//     'required': []
+//   },
+//   'Purchase': {
+//     'name': 'Purchase',
+//     'parameters': ['content_type', 'content_ids', 'value', 'currency', 'content_name', 'num_items'],
+//     'required': ['value', 'currency']
+//   },  
+//   'Search': {
+//     'name': 'Search',
+//     'parameters': ['value', 'currency', 'content_category', 'content_ids', 'search_string'],
+//     'required': []
+//   },
+//   'AddToWishlist': {
+//     'name': 'AddToWishlist',
+//     'parameters': ['value', 'currency', 'content_name', 'content_category', 'content_ids'],
+//     'required': []
+//   },
+//   'InitiateCheckout': {
+//     'name': 'InitiateCheckout',
+//     'parameters': ['value', 'currency', 'content_name', 'content_category', 'content_ids', 'num_items'],
+//     'required': []
+//   },
+//   'AddPaymentInfo': {
+//     'name': 'AddPaymentInfo',
+//     'parameters': ['value', 'currency', 'content_category', 'content_ids'],
+//     'required': []
+//   },
+//   'Lead': {
+//     'name': 'Lead',
+//     'parameters': ['value', 'currency', 'content_name', 'content_category'],
+//     'required': []
+//   },
+//   'CompleteRegistration': {
+//     'name': 'CompleteRegistration',
+//     'parameters': ['value', 'currency', 'content_name', 'status'],
+//     'required': []
+//   }
+// };
 
 function log(obj) {
   var str = JSON.stringify( obj );
   chrome.devtools.inspectedWindow.eval('console.log(' + str + ');');
 }
 
-function getSelectedID() {
-  var selectedID;
+function getAndStoreSelectedID(link) {
   chrome.devtools.inspectedWindow.eval('$0.id',
-  function(res, err) {
-    log(res);
-    if (res == null) {
-      alert('no id');
-    } else {
-      selectedID = res;
-    }
-  });
-  log(selectedID);
-  return selectedID;
+	  function(res, err) {
+	    if (res == null) {
+	      alert('no id found');
+	    } else {
+	      selectedID = res;
+	      pixelLayer[link.id] = selectedID;
+	      link.text = link.id + " (ID of selected element = " + selectedID + ")";
+	      log(pixelLayer);
+	    }
+	  });
 }
 
 function getCode() {
-  log('start getcode');  
+  	log('start getcode');  
 
-  var eventName = document.getElementById('event-selector').value;
-  var contentType = 'product';
-  var content_ids = 'product_id';
-  var value = 'price';
-  var mode = 'pageload';
-  var codeSnippet = document.getElementById('code-snippet');
-  var generatedCode = generateCode(eventName, contentType, content_ids, value, mode);
-  log(generatedCode);
-  codeSnippet.append(generatedCode);
-  show('code-snippet-block');
-  log('end getcode');
-}
+  	var eventName = document.getElementById('event-selector').value;  
+  	var mode = document.getElementById('mode-selector').value;
+	var pixelCode = "";
 
-// eventName - name of the pixel event, string, possible values are ViewContent, AddToCart, Purchase
-// contentIdsElement - id or name of the element containing the content_ids, json, eg {id: 'product_id'} or {name: 'product_id'}
-// valueElement - id or name of the element containing the value, json, eg {id: 'value'} or {name: 'value'}
-// currencyElement - id or name of the element containing the currency, json, eg {id: 'currency'} or {name: 'currency'}
-// mode - pageload or buttonclick
-// buttonElement - id or name of the element to perform the click
-function generateCode(eventName, contentType, contentIdsElement, valueElement, mode, buttonElement = 0) {
-	var contentIdsCode = generateCodeForContentIds(contentIdsElement);
-	var valueCode = generateCodeForValue(valueElement);
-	var currencyCode = "var currency = 'USD';";
-	var pixelCode = contentIdsCode +
-		valueCode +
-		currencyCode +
-		"fbq('track','"+eventName+"',{" +
-			"content_type: '"+contentType+"'," +
-			"content_ids: content_ids," + 
-			"value: amount," + 
-			"currency: currency" + 
-		"});"
+	pixelLayer = {
+		content_type: 'product',
+		content_ids: 'product_id',
+		value: 'price',
+		currency: 'USD',
+		content_name: 'name'
+	};
+	Object.values(EVENTS[eventName]['parameters']).forEach(function (param) {
+		if (pixelLayer[param.id]) {
+			if (param.type === 'link') {
+				if (param['datatype'] === 'string') {
+					pixelCode += generateCodeForString(param);
+				}
+				if (param['datatype'] === 'number') {
+					pixelCode += generateCodeForNumber(param);
+				}
+			}
+			if (param.type === 'select') {
+				pixelCode = pixelCode + "var " + param['id'] + " = ";
+				if (param['datatype'] === 'string') {
+					pixelCode = pixelCode + "'" + pixelLayer[param['id']] + "';"
+				}
+				if (param['datatype'] === 'number') {
+					pixelCode = pixelCode + pixelLayer[param['id']] + ";";
+				}				
+			}	
+		}
+	});
 
-	var generatedCode = getCodeByMode(pixelCode, mode, buttonElement);
-	return generatedCode;
+	pixelCode = pixelCode + "fbq('track','"+eventName+"',{source:'pixels4dummy'";
+	Object.values(EVENTS[eventName]['parameters']).forEach(function (param) {
+		pixelCode = pixelCode + "," + param.id + ":" + param.id;
+	});
+	pixelCode += "});"
+	
+	var generatedCode = getCodeByMode(pixelCode, mode);
+	console.log(generatedCode);
+  	var codeSnippet = document.getElementById('code-snippet');
+  	codeSnippet.innerHTML = "";
+  	codeSnippet.append(generatedCode);
+  	show('code-snippet-block');
+
+  	log('end getcode');
 }
 
 function generateCodeForObject(element) {	
-	// if (element.id) {
-		return "obj = document.getElementById('" + element + "');";
-	// } else {
-	// 	return "obj = document.getElementsByName('" + element.name + "')[0];";
-	// }
+	return "obj = document.getElementById('" + element + "');";
 }
 
-function generateCodeForContentIds(element) {
-	code = generateCodeForObject(element);
-	code = code + "var content_ids = '';" +
+function generateCodeForString(param) {
+	code = generateCodeForObject(pixelLayer[param.id]);
+	code = code + "var " + param.id + " = '';" +
 		"if (obj.value) {" +
-		"content_ids = obj.value;" +
+		param.id + " = obj.value;" +
 		"} else if (obj.innerHTML) {" +
-		"content_ids = obj.innerHTML;" +
+		param.id + " = obj.innerHTML;" +
 		"}";
 	return code;
 }
 
-function generateCodeForValue(element) {
-	code = generateCodeForObject(element);
-	code = code + "var amount = 0;" +
+function generateCodeForNumber(param) {
+	code = generateCodeForObject(pixelLayer[param.id]);
+	code = code + "var " + param.id + " = 0;" +
 		"if (obj.value) {" +
-		"amount = obj.value.match(/-?\\d+\\.?\\d*/);" +
+		param.id + " = obj.value.match(/-?\\d+\\.?\\d*/);" +
 		"} else if (obj.innerHTML) {" +
 		"results = obj.innerHTML.match(/-?\\d+\\.?\\d*/);" +
 		"if (results) {" +
-		"amount = results[0];" +
+		param.id + " = results[0];" +
 		"}" +
 		"}";
 	return code;
@@ -143,6 +184,7 @@ function generateCodeForValue(element) {
 
 function getCodeByMode(pixelCode, mode, buttonElement = 0) {
 	var generatedCode = null;
+	log(mode);
 	if (mode === 'buttonclick' && buttonElement) {
 		generatedCode = "<script>" +
 			"document.addEventListener('DOMContentLoaded', function() {";
@@ -175,8 +217,6 @@ function show(id) {
   }
 }
 
-
-
 function addEventsToMenu() {
   var menu = document.getElementById("event-selector");
 
@@ -189,11 +229,8 @@ function addEventsToMenu() {
   });
 }
 
-function attributeIDtoLink(link) {
-	var id = getSelectedID();
-	var text = link.innerHTML;
-	pixelLayer.push({text: id});
-	link.innerHTML.append(': ' + id);
+function setSelectedValue(select) {
+	pixelLayer[select.id] = select.value;
 }
 
 function onEventSelect() {
@@ -205,26 +242,45 @@ function onEventSelect() {
 
   Object.values(EVENTS[selectedEvent]['parameters']).forEach(function (param) {
     var item = document.createElement('li');
-    var link = document.createElement('a');
+
+    if (param['type'] === 'link') {
+	    var link = document.createElement('a');
 		link.setAttribute('href', '#');
-		link.setAttribute('id', selectedEvent.toString() + '_' + param);
-		link.addEventListener('click', () => attributeIDtoLink(this));
-    if (EVENTS[selectedEvent]['required'].includes(param)) {
-      link.appendChild(document.createTextNode(param + " (required)"));
-    } else {
-      link.appendChild(document.createTextNode(param));
-    }
+		link.setAttribute('id', param['id']);
+		link.addEventListener('click', () => getAndStoreSelectedID(link));
+		linkText = param['id'];		
+	    if (param['availability'] === 'required') {
+	      linkText = "** " + linkText;
+	    }
+	    if (param['availability'] === 'recommended') {
+	      linkText = "* " + linkText;
+	    }
+	    link.appendChild(document.createTextNode(linkText));	    
 		item.appendChild(link);
+	}
+
+	if (param['type'] === 'select') {
+	    var select = document.createElement('select');
+		select.setAttribute('id', param['id']);
+		select.addEventListener('change', () => setSelectedValue(select));
+		for (i = 0; i < param['values'].length; i++) {
+			var option = document.createElement('option');
+			option.text = param['values'][i];
+			option.label = param['values'][i];
+			select.appendChild(option);
+		}
+		item.appendChild(select);
+	}
     list.appendChild(item);
   });
   paramsDiv.innerHTML = '';
   paramsDiv.appendChild(list);
   paramsGroupDiv.style.display = 'block';
+  pixelLayer = {};
 }
 
 function init() {
   document.getElementById('getcode').addEventListener('click', function() {getCode();});
-  getSelectedID();
 
   addEventsToMenu();
   var menu = document.getElementById("event-selector");

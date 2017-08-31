@@ -1,5 +1,23 @@
-Pixels 4 Dummies
+Pixels 4 Dummies v0.1a
 Solutions Engineering Hackathon 8/19/17
+
+How to install:
+1. Download the source code to local drive and unzip.
+2. Launch chrome. 
+3. Click on either the 3 dots menu or green icon with up arrow on the toolbar -> More Tools -> Extensions
+4. Click on "Load unpacked extension..." button
+5. Choose the folder of the source code and click on Select
+6. There will be a new extension called PixelGen
+
+How to use:
+1. Click on either the 3 dots menu or green icon with up arrow on the toolbar -> More Tools -> Developer Tools
+2. Look for the tab named Pixel4Dummies
+
+What is missing/not working
+1. Button click
+2. Multiple content_ids, especially for purchase
+3. Selector will always jump to the source code tab instead of remaining on Pixel4Dummies tab
+4. Many many others...
 
 Contributers:
 Anish Bhayani
